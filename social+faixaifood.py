@@ -21,14 +21,27 @@ df['EstadoCivil'] = df.apply(estado_civil, axis=1)
 
 media = df.groupby(['FaixaEtaria', 'EstadoCivil'])['MntTotal'].mean().reset_index()
 
-plt.figure(figsize=(12,6))
-sns.barplot(data=media, x='FaixaEtaria', y='MntTotal', hue='EstadoCivil', palette='Set2')
+plt.figure(figsize=(12,7))
+sns.set_style('whitegrid')
+sns.set_palette('pastel')
+sns.set_context('notebook', font_scale=1.2)
 
-plt.title('Gasto Médio Total por Faixa Etária e Estado Civil')
-plt.xlabel('Faixa Etária')
-plt.ylabel('Gasto Médio (R$)')
-plt.legend(title='Estado Civil')
-plt.grid(axis='y', alpha=0.2)
+barplot = sns.barplot(
+    data=media, 
+    x='FaixaEtaria', 
+    y='MntTotal', 
+    hue='EstadoCivil', 
+    dodge=True, 
+    edgecolor='gray'
+)
+
+for container in barplot.containers:
+    barplot.bar_label(container, fmt='R$ %.0f', label_type='edge', padding=2)
+
+plt.title('💰 Gasto Médio Total por Faixa Etária e Estado Civil', fontsize=16, weight='bold', pad=20)
+plt.xlabel('Faixa Etária', labelpad=10)
+plt.ylabel('Gasto Médio (R$)', labelpad=10)
+plt.legend(title='Estado Civil', bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
+plt.xticks(rotation=0)
 plt.tight_layout()
 plt.show()
-
