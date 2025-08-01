@@ -7,17 +7,17 @@ df = pd.read_csv(arquivo, encoding='latin1')
 
 def extrair_estado_civil(row):
     if row['marital_Divorced'] == 1:
-        return 'Divorced'
+        return 'Divorciado'
     elif row['marital_Married'] == 1:
-        return 'Married'
+        return 'Casado'
     elif row['marital_Single'] == 1:
-        return 'Single'
+        return 'Solteiro'
     elif row['marital_Together'] == 1:
-        return 'Together'
+        return 'Juntado'
     elif row['marital_Widow'] == 1:
-        return 'Widow'
+        return 'Viúvo'
     else:
-        return 'Unknown'
+        return 'Desconhecido'
 
 df['estado_civil'] = df.apply(extrair_estado_civil, axis=1)
 
@@ -29,4 +29,3 @@ plt.ylabel('Gastos Totais')
 plt.xticks(rotation=45)
 plt.tight_layout()
 plt.show()
-
