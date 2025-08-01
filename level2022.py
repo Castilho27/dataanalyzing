@@ -19,27 +19,26 @@ top_industry['Outros'] = outros
 plt.figure(figsize=(10,10))
 cores = plt.get_cmap('Set3').colors
 
-def func(pct, allvals):
-    absolute = int(pct/100.*sum(allvals))
-    return f'{pct:.1f}%\n({absolute:,})' if pct > 3 else ''  
 
-wedges, texts, autotexts = plt.pie(
+total = top_industry.sum()
+labels_legenda = [
+    f"{i}: {v:,.0f} ({v/total*100:.1f}%)"
+    for i, v in zip(top_industry.index, top_industry.values)
+]
+
+wedges, texts = plt.pie(
     top_industry,
     labels=None,  
-    autopct=lambda pct: func(pct, top_industry),
     startangle=140,
     colors=cores,
-    pctdistance=0.75,
-    labeldistance=1.1,
     wedgeprops=dict(width=0.4, edgecolor='w')
 )
 
 plt.title(f'Dívida de Cheque Especial por Setor Econômico')
 plt.axis('equal')
 
-plt.legend(wedges, top_industry.index, title="Setores", loc="center left", bbox_to_anchor=(1, 0, 0.5, 1))
+plt.legend(wedges, labels_legenda, title="Setores", loc="center left", bbox_to_anchor=(1, 0, 0.5, 1))
 
 plt.tight_layout()
 plt.show()
-
 
