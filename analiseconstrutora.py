@@ -1,33 +1,22 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
-from sklearn import tree
-
-df = pd.read_csv("construtoras.csv")
-
-df['Vendidos'] = df['Vendidos'].map({'Sim': 1, 'Não': 0})
-
-X = df[['Número de Torres', 'Vendidos', 'Preço']]
-y = df['Construtora']
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-clf = DecisionTreeClassifier(max_depth=5, random_state=42)
-clf.fit(X_train, y_train)
-
-accuracy = clf.score(X_test, y_test)
-print(f"Acurácia da árvore de decisão: {accuracy*100:.2f}%")
-
 import matplotlib.pyplot as plt
+import seaborn as sns
 
-plt.figure(figsize=(20,10))
-tree.plot_tree(clf, feature_names=X.columns, class_names=df['Construtora'].unique(), filled=True)
+df = pd.read_csv(r"C:\Users\luber\OneDrive\Documentos\Estudos\Dados\construtoras.csv")
+df['Vendidos'] = df['Vendidos'].map({'Sim': 1, 'Não': 0})
+preco_medio = df.groupby('Construtora')['Preço'].mean().sort_values()
+plt.figure(figsize=(10,6))
+sns.barplot(x=preco_medio.index, y=preco_medio.values, palette="Blues_d")
+plt.title("Preço médio por Construtora")
+plt.ylabel("Preço médio (R$)")
+plt.xlabel("Construtora")
+plt.xticks(rotation=45)
 plt.show()
-
-exemplo = pd.DataFrame({
-    'Número de Torres': [4],
-    'Vendidos': [0],
-    'Preço': [500000]
-})
-predicao = clf.predict(exemplo)
-print(f"Construtora recomendada: {predicao[0]}")
+plt.figure(figsize=(10,6))
+sns.barplot(x='Construtora', y='Número de Torres', hue='Vendidos', data=df, palette=['red','green'])
+plt.title("Número de Torres e status de venda por Construtora")
+plt.ylabel("Número de Torres")
+plt.xlabel("Construtora")
+plt.xticks(rotation=45)
+plt.legend(title='Vendido', labels=['Não', 'Sim'])
+plt.show()
